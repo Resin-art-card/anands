@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VCard</title>
+  <meta name="description" content="Digital vCard with contact links, social icons, map and policies" />
+  <style>
+    :root{
+      --bg1:#0f172a; --bg2:#0b1a3a; --card:#0b1220; --accent:#06b6d4; --muted:#9aa7bf;
+      --glass: rgba(255,255,255,0.03);
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --max-width:420px;
+      --radius:14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;display:flex;align-items:center;justify-content:center;padding:32px;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .card{
+      width:100%;max-width:var(--max-width);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);backdrop-filter: blur(6px);
+    }
+    .header{display:flex;gap:14px;align-items:center}
+    .avatar{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px}
+    .name{font-size:18px;font-weight:700}
+    .role{color:var(--muted);font-size:13px;margin-top:4px}
+
+    .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.03);cursor:pointer;text-decoration:none;color:inherit}
+    .btn .ico{width:20px;height:20px;display:inline-block}
+    .contact{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+    .small{font-size:13px;color:var(--muted)}
+    .social-row{display:flex;gap:10px;margin-top:12px}
+    .social{width:44px;height:44px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+    .map{width:100%;height:180px;border-radius:10px;overflow:hidden;margin-top:14px;border:1px solid rgba(255,255,255,0.04)}
+    footer{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:14px}
+    a.policy{font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer}
+
+    /* cookie bar */
+    .cookie-bar{position:fixed;left:16px;right:16px;bottom:16px;background:rgba(2,6,23,0.9);padding:12px;border-radius:10px;display:flex;gap:12px;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.03)}
+    .cookie-bar p{margin:0;color:var(--muted);font-size:13px}
+    .cookie-actions{display:flex;gap:8px}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:16px}
+    .modal{max-width:900px;width:100%;max-height:85vh;overflow:auto;background:#031026;border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03)}
+    .modal h2{margin-top:0}
+    .close{margin-left:auto;cursor:pointer}
+
+    /* responsive */
+    @media (max-width:420px){body{padding:16px}.card{padding:16px}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <div class="header">
+      <div class="avatar" id="avatar">AS</div>
+      <div>
+        <div class="name" id="fullname">Anand s</div>
+        <div class="role" id="tagline">Mechatronics Engineer • Industrial Automation</div>
+      </div>
+    </div>
+
+    <div class="contact">
+      <div class="small">Contact</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="tel:+918590491968" id="phone"><span class="ico">📞</span> +91 85904 91968</a>
+        <a class="btn" href="mailto:anandjee@gmail.com" id="email"><span class="ico">✉️</span> anandjee@gmail.com</a>
+      </div>
+    </div>
+
+    <div class="links">
+      <a class="btn" id="download-vcard"><span class="ico">💾</span> Download vCard</a>
+      <a class="btn" id="open-whatsapp" href="#"><span class="ico">💬</span> Message on WhatsApp</a>
+      <a class="btn" id="open-map" href="#map"><span class="ico">📍</span> View on Map</a>
+    </div>
+
+    <div class="small" style="margin-top:14px">Connect with me</div>
+    <div class="social-row" aria-label="social links">
+      <!-- each social button opens link in a new tab; replace hrefs with client's URLs -->
+      <a class="social" title="Instagram" id="s-instagram" href="https://www.instagram.com/anand_s_777" target="_blank" rel="noopener noreferrer"> 
+        <!-- instagram svg -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.2"/><path d="M7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.7" cy="6.3" r="0.6" fill="currentColor"/></svg>
+      </a>
+
+      <a class="social" title="LinkedIn" id="s-linkedin" href="www.linkedin.com/in/anand-s-639949256" target="_blank" rel="noopener noreferrer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.2"/><path d="M7 10v7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M7 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M11 17v-4a2 2 0 0 1 4 0v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </a>
+
+     
+    </div>
+
+    <div class="map" id="map">
+      <!-- Google Maps embed: replace the src with an embed URL for client's address -->
+      <iframe id="mapframe" src="https://www.google.com/maps?q=Trivandrum,+Kerala&output=embed" width="100%" height="100%" style="border:0" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
+    <footer>
+      <a class="policy" data-policy="privacy">Privacy Policy</a>
+      <a class="policy" data-policy="cookie">Cookie Policy</a>
+      <a class="policy" data-policy="report">Report an Issue</a>
+    </footer>
+  </main>
+
+  <!-- cookie consent -->
+  <div class="cookie-bar" id="cookieBar" role="dialog" aria-live="polite" style="display:none">
+    <p>We use cookies to improve your experience. By continuing you accept our cookie policy.</p>
+    <div class="cookie-actions">
+      <button class="btn" id="btnAccept">Accept</button>
+      <button class="btn" id="btnManage">Manage</button>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-hidden="true">
+    <div class="modal" role="document">
+      <div style="display:flex;align-items:center;gap:12px">
+        <h2 id="modalTitle">Policy</h2>
+        <div class="close" id="modalClose">✖</div>
+      </div>
+      <div id="modalContent" style="margin-top:10px;color:var(--muted);line-height:1.6;font-size:14px">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- basic personalization ---
+    const data = {
+      fullName: 'Anand S',
+      tagline: 'Mechatronics Engineer • Industrial Automation',
+      phone: '+918590491968',
+      email: 'anandjee@gmail.com',
+      instagram: 'https://instagram.com/yourhandle',
+      linkedin: 'https://linkedin.com/in/yourhandle',
+      twitter: 'https://twitter.com/yourhandle',
+      facebook: 'https://facebook.com/yourhandle',
+      mapQuery: 'Nirmala+College+of+Engineering+and+Management,Kerala'
+    }
+
+    // inject personal details
+    document.getElementById('fullname').textContent = data.fullName;
+    document.getElementById('tagline').textContent = data.tagline;
+    document.getElementById('avatar').textContent = data.fullName.split(' ').map(s=>s[0]).slice(0,2).join('');
+    document.getElementById('phone').href = 'tel:'+data.phone.replace(/\s+/g,'');
+    document.getElementById('email').href = 'mailto:'+data.email;
+    document.getElementById('s-instagram').href = data.instagram;
+    document.getElementById('s-linkedin').href = data.linkedin;
+    document.getElementById('s-twitter').href = data.twitter;
+    document.getElementById('s-facebook').href = data.facebook;
+    document.getElementById('mapframe').src = 'https://www.google.com/maps?q='+encodeURIComponent(data.mapQuery)+'&output=embed';
+
+    // cookie consent handling
+    const cookieBar = document.getElementById('cookieBar');
+    if(!localStorage.getItem('vcard_cookie_accepted')){
+      cookieBar.style.display = 'flex';
+    }
+    document.getElementById('btnAccept').addEventListener('click', ()=>{
+      localStorage.setItem('vcard_cookie_accepted','1');
+      cookieBar.style.display='none';
+    });
+    document.getElementById('btnManage').addEventListener('click', ()=>{
+      openModal('cookie');
+    });
+
+    // modal content for policies
+    const policies = {
+      privacy: `**Privacy Policy**\n\nWe respect your privacy. This vCard collects no personal data from visitors. Contact information shown is provided only to allow direct communication. We do not store analytics or share data with third parties through this page.`,
+      cookie: `**Cookie Policy**\n\nThis site uses a small local cookie (stored in browser localStorage) only to remember your cookie consent preference. No tracking cookies or third-party analytics are used by default.`,
+      report: `**Report an Issue**\n\nIf you find any incorrect information, broken links, or have concerns, please report by emailing report@yourdomain.com or use the contact methods above. We will respond within a reasonable time.`
+    }
+
+    function openModal(which){
+      document.getElementById('modalBackdrop').style.display = 'flex';
+      document.getElementById('modalBackdrop').setAttribute('aria-hidden','false');
+      document.getElementById('modalTitle').textContent = which.charAt(0).toUpperCase()+which.slice(1)+' Policy';
+      // render simple markdown-like bold -> strong
+      const raw = policies[which] || 'No policy found';
+      const html = raw.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g,'<br>');
+      document.getElementById('modalContent').innerHTML = html;
+    }
+    document.querySelectorAll('a.policy').forEach(a=>a.addEventListener('click', e=>{openModal(e.currentTarget.dataset.policy);}));
+    document.getElementById('modalClose').addEventListener('click', ()=>{document.getElementById('modalBackdrop').style.display='none';document.getElementById('modalBackdrop').setAttribute('aria-hidden','true');});
+    document.getElementById('modalBackdrop').addEventListener('click', e=>{if(e.target===document.getElementById('modalBackdrop')){document.getElementById('modalBackdrop').style.display='none';document.getElementById('modalBackdrop').setAttribute('aria-hidden','true');}})
+
+    // WhatsApp quick link
+    document.getElementById('open-whatsapp').href = 'https://wa.me/'+data.phone.replace(/\D/g,'')+'?text='+encodeURIComponent('Hello '+data.fullName+'!');
+
+    // Download vCard generation
+    document.getElementById('download-vcard').addEventListener('click', ()=>{
+      const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${data.fullName}\nTITLE:${data.tagline}\nTEL;TYPE=WORK,VOICE:${data.phone}\nEMAIL:${data.email}\nADR;TYPE=WORK:;;${data.mapQuery.replace(/\+/g,' ')}\nEND:VCARD`;
+      const blob = new Blob([vcf],{type:'text/vcard'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = (data.fullName.replace(/\s+/g,'_')||'contact')+'.vcf'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    // accessibility: keyboard close modal with Esc
+    document.addEventListener('keydown',(e)=>{if(e.key==='Escape'){document.getElementById('modalBackdrop').style.display='none';document.getElementById('modalBackdrop').setAttribute('aria-hidden','true');}});
+  </script>
+</body>
+</html>
